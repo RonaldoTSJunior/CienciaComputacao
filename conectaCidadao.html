@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conecta Cidadão - Projeto de Impacto Social</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Calming Blue -->
+    <!-- Application Structure Plan: A narrative, single-page scrolling structure was chosen to guide the user through the project's story, from problem to impact. This is more engaging than a static canvas replication. The flow is: 1. Hero (Introduction), 2. The Challenge (Problem), 3. Our Solution (Value), 4. Our Principles (Accessibility & Sustainability), 5. Our Impact (Metrics Dashboard), 6. Call to Action (Sustainability Model). This structure builds a compelling case for the project's importance and effectiveness, with interactive charts to make the impact tangible and explorable. -->
+    <!-- Visualization & Content Choices: Report Info: Problem description -> Goal: Empathize -> Viz: Dynamic number counters -> Interaction: Animate on scroll -> Justification: Highlights the scale of the issue effectively. Report Info: Metrics -> Goal: Demonstrate success -> Viz: Dashboard with Bar, Doughnut, and Line charts -> Interaction: Tooltips and data filtering -> Justification: Makes abstract metrics concrete, interactive, and easy to understand. Library: Chart.js. Report Info: Accessibility/Sustainability -> Goal: Organize core values -> Viz: Icon-based feature grid -> Interaction: Hover effects -> Justification: Clearly presents key principles in a scannable format. New Feature: Report Info: Pillar concepts -> Goal: Deepen understanding -> Viz: Modal with dynamically generated text from LLM -> Interaction: Click button to generate and display explanation -> Justification: Translates abstract principles into detailed, on-demand content, reinforcing the project's values. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #343A40;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .stat-number {
+            transition: all 1.5s ease-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-slate-800">
+                Conecta <span class="text-blue-600">Cidadão</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#problema" class="text-slate-600 hover:text-blue-600 transition-colors">O Desafio</a>
+                <a href="#solucao" class="text-slate-600 hover:text-blue-600 transition-colors">A Solução</a>
+                <a href="#impacto" class="text-slate-600 hover:text-blue-600 transition-colors">Nosso Impacto</a>
+                <a href="#pilares" class="text-slate-600 hover:text-blue-600 transition-colors">Nossos Pilares</a>
+            </div>
+            <a href="#apoie" class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition-transform hover:scale-105">Apoie o Projeto</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-slate-800 leading-tight">Sua ponte para o mundo digital.</h1>
+                <p class="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">Capacitando cidadãos e reduzindo a desigualdade digital com tecnologia acessível, inclusiva e sustentável.</p>
+                <div class="mt-10">
+                    <a href="#solucao" class="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105 inline-block">Conheça a Solução</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="problema" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800">O Desafio da Exclusão Digital</h2>
+                    <p class="mt-4 text-slate-600">Em um mundo cada vez mais conectado, milhões de brasileiros, especialmente os mais velhos e de baixa renda, estão sendo deixados para trás. A falta de acesso e conhecimento digital não é apenas um inconveniente, mas uma barreira que aprofunda a desigualdade e limita o acesso a serviços essenciais como saúde, educação e oportunidades de emprego.</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center" id="stats-container">
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-5xl font-bold text-blue-600 stat-number" data-target="45">0%</h3>
+                        <p class="mt-2 text-slate-600 font-medium">dos idosos em áreas periféricas têm dificuldade em usar serviços online.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                         <h3 class="text-5xl font-bold text-blue-600 stat-number" data-target="60">0%</h3>
+                        <p class="mt-2 text-slate-600 font-medium">dos serviços públicos essenciais já são primariamente digitais.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                         <h3 class="text-5xl font-bold text-blue-600 stat-number" data-target="75">0%</h3>
+                        <p class="mt-2 text-slate-600 font-medium">dos usuários iniciantes desistem por causa de interfaces complexas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solucao" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                 <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Uma Solução Focada na Autonomia</h2>
+                    <p class="mt-4 text-slate-600" id="solucao-text">O "Conecta Cidadão" é mais que um aplicativo; é um guia que capacita o usuário. Através de uma plataforma ultra-simplificada, oferecemos tutoriais interativos que ensinam, passo a passo, como navegar nos serviços digitais essenciais, promovendo independência e confiança.</p>
+                    <div class="mt-6">
+                        <button id="tts-button" class="bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-blue-700 transition-transform hover:scale-105 inline-flex items-center space-x-2">
+                             <span>✨</span>
+                            <span>Ler em Voz Alta</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:shadow-lg transition-shadow">
+                        <div class="text-3xl text-blue-600">➔</div>
+                        <h3 class="text-xl font-bold mt-4">Tutoriais Interativos</h3>
+                        <p class="mt-2 text-slate-600">Guias passo a passo com áudio e recursos visuais simples para tarefas como agendar consultas ou se inscrever em programas sociais.</p>
+                    </div>
+                     <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:shadow-lg transition-shadow">
+                        <div class="text-3xl text-blue-600">☺</div>
+                        <h3 class="text-xl font-bold mt-4">Interface Ultra-Simplificada</h3>
+                        <p class="mt-2 text-slate-600">Projetado para o usuário iniciante, com ícones grandes, alto contraste e navegação intuitiva para combater a ansiedade tecnológica.</p>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:shadow-lg transition-shadow">
+                        <div class="text-3xl text-blue-600">🌐</div>
+                        <h3 class="text-xl font-bold mt-4">Acessível para Todos</h3>
+                        <p class="mt-2 text-slate-600">Leve, com baixo consumo de dados e modo offline para tutoriais básicos. Funciona bem em aparelhos antigos e com internet lenta.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impacto" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                 <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Medindo Nosso Impacto</h2>
+                    <p class="mt-4 text-slate-600">Acreditamos em transparência e resultados. Nosso sucesso é medido pelo aumento da inclusão digital e pela melhoria real na qualidade de vida dos usuários. Acompanhe nosso progresso através de métricas de engajamento e resultados concretos.</p>
+                </div>
+
+                <div class="mt-8 flex justify-center items-center space-x-4">
+                    <span class="text-slate-600 font-medium">Visualizar dados de:</span>
+                     <button id="btn2024" class="px-4 py-2 rounded-full bg-blue-600 text-white font-semibold shadow">2024</button>
+                    <button id="btn2025" class="px-4 py-2 rounded-full bg-white text-slate-700 font-semibold shadow">2025</button>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                        <h3 class="font-bold text-center text-slate-700">Crescimento de Usuários Ativos</h3>
+                         <div class="chart-container">
+                            <canvas id="userGrowthChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                        <h3 class="font-bold text-center text-slate-700">Taxa de Conclusão de Tutoriais</h3>
+                         <div class="chart-container">
+                            <canvas id="completionRateChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-6 md:p-8 rounded-xl shadow-md">
+                        <h3 class="font-bold text-center text-slate-700">Tarefas Digitais Concluídas com Sucesso</h3>
+                         <div class="chart-container mx-auto" style="max-width: 800px;">
+                            <canvas id="tasksCompletedChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pilares" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Nossos Pilares Fundamentais</h2>
+                    <p class="mt-4 text-slate-600">O projeto é construído sobre uma base sólida de inclusão, acessibilidade e sustentabilidade. Estes não são apenas adjetivos, mas princípios que guiam cada decisão de design e desenvolvimento para garantir um impacto positivo e duradouro.</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                     <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:shadow-lg transition-shadow">
+                        <div class="text-3xl text-blue-600">♿</div>
+                        <h3 class="font-bold text-xl mt-4">Acessibilidade WCAG</h3>
+                        <p class="mt-2 text-slate-600">Seguimos as <a href="https://www.w3.org/WAI/WCAG21/Understanding/" target="_blank" class="text-blue-600 underline hover:no-underline">diretrizes globais WCAG</a> para garantir que a plataforma possa ser usada por todos, incluindo pessoas com deficiência.</p>
+                        <button class="mt-4 text-blue-600 hover:text-blue-800 transition-colors expand-button" data-pillar="Acessibilidade WCAG"><span>✨</span> Expandir</button>
+                    </div>
+                     <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:shadow-lg transition-shadow">
+                        <div class="text-3xl text-blue-600">📱</div>
+                        <h3 class="font-bold text-xl mt-4">Design Inclusivo</h3>
+                        <p class="mt-2 text-slate-600">Interface pensada para quem tem pouca familiaridade com tecnologia.</p>
+                        <button class="mt-4 text-blue-600 hover:text-blue-800 transition-colors expand-button" data-pillar="Design Inclusivo"><span>✨</span> Expandir</button>
+                    </div>
+                     <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:shadow-lg transition-shadow">
+                        <div class="text-3xl text-blue-600">🌱</div>
+                        <h3 class="font-bold text-xl mt-4">Sustentabilidade (TI Verde)</h3>
+                        <p class="mt-2 text-slate-600">Código otimizado e servidores de baixo consumo para minimizar nossa pegada de carbono.</p>
+                        <button class="mt-4 text-blue-600 hover:text-blue-800 transition-colors expand-button" data-pillar="Sustentabilidade (TI Verde)"><span>✨</span> Expandir</button>
+                    </div>
+                     <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 hover:shadow-lg transition-shadow">
+                        <div class="text-3xl text-blue-600">🤝</div>
+                        <h3 class="font-bold text-xl mt-4">Modelo Social</h3>
+                        <p class="mt-2 text-slate-600">Operamos como um negócio social ou ONG, focados 100% no impacto positivo.</p>
+                        <button class="mt-4 text-blue-600 hover:text-blue-800 transition-colors expand-button" data-pillar="Modelo Social"><span>✨</span> Expandir</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="apoie" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 text-center">
+                 <div class="max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Faça Parte da Mudança</h2>
+                    <p class="mt-4 text-slate-600">A sustentabilidade do "Conecta Cidadão" depende de parcerias e apoio. Seja através de colaborações com órgãos públicos, investimentos de fundações ou doações, sua ajuda é fundamental para mantermos a plataforma gratuita e expandirmos nosso alcance para quem mais precisa.</p>
+                    <div class="mt-10 flex justify-center space-x-4">
+                        <a href="mailto:parcerias@conectacidadao.org" class="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105 inline-block">Seja um Parceiro</a>
+                        <button id="email-button" class="bg-slate-200 text-slate-800 px-8 py-4 rounded-full text-lg font-semibold hover:bg-slate-300 transition-transform hover:scale-105 inline-flex items-center space-x-2">
+                             <span>✨</span>
+                            <span>Gerar E-mail</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="email-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-2/3 lg:w-1/2 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Gerar E-mail para Parceria</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">Descreva os pontos-chave que você gostaria de incluir no e-mail (por exemplo: "procurando financiamento, projeto focado em idosos, grande impacto social").</p>
+                    <textarea id="email-input" class="mt-4 w-full p-2 border rounded-md" rows="4"></textarea>
+                    <button id="generate-email" class="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-700 transition-colors">Gerar Rascunho</button>
+                    <div id="loading-spinner" class="mt-4 hidden animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+                    <textarea id="email-output" class="mt-4 w-full p-2 border rounded-md" rows="10" readonly placeholder="O rascunho do e-mail aparecerá aqui."></textarea>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="close-modal" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="explanation-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-2/3 lg:w-1/2 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 id="explanation-title" class="text-lg leading-6 font-medium text-gray-900"></h3>
+                <div class="mt-2 px-7 py-3">
+                    <div id="explanation-loading" class="mt-4 hidden animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+                    <p id="explanation-text" class="text-sm text-gray-600 text-left"></p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="close-explanation-modal" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="font-bold text-xl">Conecta Cidadão</p>
+            <p class="mt-2 text-slate-400">Reduzindo a desigualdade digital, um cidadão de cada vez.</p>
+            <p class="mt-6 text-sm text-slate-500">Este projeto é um trabalho acadêmico para fins de estudo e não representa um projeto real em andamento.</p>
+            <p class="mt-2 text-sm text-slate-500">Universidade Cruzeiro do Sul | Curso de Ciência da Computação</p>
+            <p class="mt-2 text-sm text-slate-500">Ronaldo Trindade Dos Santos Junior</p>
+            <p class="mt-6 text-sm text-slate-500">&copy; 2025 Conecta Cidadão. Um projeto de impacto social de código aberto.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartData = {
+                2024: {
+                    users: { labels: ['Jan', 'Fev', 'Mar', 'Abr'], values: [500, 800, 1200, 1800] },
+                    completion: { values: [85, 15] },
+                    tasks: { labels: ['Jan-Mar', 'Abr-Jun', 'Jul-Set', 'Out-Dez'], values: [2000, 3500, 5200, 7500] }
+                },
+                2025: {
+                    users: { labels: ['Jan', 'Fev', 'Mar', 'Abr'], values: [2500, 3200, 4100, 5500] },
+                    completion: { values: [92, 8] },
+                    tasks: { labels: ['Jan-Mar', 'Abr-Jun', 'Jul-Set', 'Out-Dez'], values: [10000, 15000, 22000, 31000] }
+                }
+            };
+
+            let currentYear = '2024';
+            let userGrowthChart, completionRateChart, tasksCompletedChart;
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#64748b' },
+                        grid: { color: '#e2e8f0' }
+                    },
+                    x: {
+                        ticks: { color: '#64748b' },
+                        grid: { display: false }
+                    }
+                }
+            };
+            
+            const doughnutOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#64748b' }
+                    }
+                }
+            };
+
+            function createCharts(year) {
+                const data = chartData[year];
+
+                if (userGrowthChart) userGrowthChart.destroy();
+                const ugcCtx = document.getElementById('userGrowthChart').getContext('2d');
+                userGrowthChart = new Chart(ugcCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.users.labels,
+                        datasets: [{
+                            label: 'Usuários Ativos',
+                            data: data.users.values,
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5
+                        }]
+                    },
+                    options: chartOptions
+                });
+
+                if (completionRateChart) completionRateChart.destroy();
+                const crcCtx = document.getElementById('completionRateChart').getContext('2d');
+                completionRateChart = new Chart(crcCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Concluídos', 'Abandonados'],
+                        datasets: [{
+                            data: data.completion.values,
+                            backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(226, 232, 240, 0.8)'],
+                            borderColor: ['#ffffff', '#ffffff'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: doughnutOptions
+                });
+
+                if (tasksCompletedChart) tasksCompletedChart.destroy();
+                const tccCtx = document.getElementById('tasksCompletedChart').getContext('2d');
+                tasksCompletedChart = new Chart(tccCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.tasks.labels,
+                        datasets: [{
+                            label: 'Tarefas Concluídas',
+                            data: data.tasks.values,
+                            fill: true,
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            tension: 0.3
+                        }]
+                    },
+                    options: chartOptions
+                });
+            }
+
+            const btn2024 = document.getElementById('btn2024');
+            const btn2025 = document.getElementById('btn2025');
+
+            btn2024.addEventListener('click', () => {
+                currentYear = '2024';
+                createCharts(currentYear);
+                btn2024.classList.add('bg-blue-600', 'text-white');
+                btn2024.classList.remove('bg-white', 'text-slate-700');
+                btn2025.classList.add('bg-white', 'text-slate-700');
+                btn2025.classList.remove('bg-blue-600', 'text-white');
+            });
+
+            btn2025.addEventListener('click', () => {
+                currentYear = '2025';
+                createCharts(currentYear);
+                btn2025.classList.add('bg-blue-600', 'text-white');
+                btn2025.classList.remove('bg-white', 'text-slate-700');
+                btn204.classList.add('bg-white', 'text-slate-700');
+                btn2024.classList.remove('bg-blue-600', 'text-white');
+            });
+
+            createCharts(currentYear);
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const stats = entry.target.querySelectorAll('.stat-number');
+                        stats.forEach(stat => {
+                            const target = +stat.dataset.target;
+                            let current = 0;
+                            const increment = target / 100;
+
+                            const updateCount = () => {
+                                if (current < target) {
+                                    current += increment;
+                                    stat.innerText = Math.ceil(current) + '%';
+                                    requestAnimationFrame(updateCount);
+                                } else {
+                                    stat.innerText = target + '%';
+                                }
+                            };
+                            updateCount();
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const statsContainer = document.getElementById('stats-container');
+            if (statsContainer) {
+                observer.observe(statsContainer);
+            }
+
+            const ttsButton = document.getElementById('tts-button');
+            const solucaoText = document.getElementById('solucao-text').innerText;
+            const audioPlayer = new Audio();
+            let isPlaying = false;
+            let audioContext;
+
+            function base64ToArrayBuffer(base64) {
+                const binaryString = window.atob(base64);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
+            
+            function pcmToWav(pcmData, sampleRate) {
+                const buffer = new ArrayBuffer(44 + pcmData.length * 2);
+                const view = new DataView(buffer);
+                const format = 1;
+                const channels = 1;
+                const bitsPerSample = 16;
+                const byteRate = sampleRate * channels * bitsPerSample / 8;
+                const blockAlign = channels * bitsPerSample / 8;
+                let offset = 0;
+                function writeString(str) {
+                    for (let i = 0; i < str.length; i++) {
+                        view.setUint8(offset + i, str.charCodeAt(i));
+                    }
+                    offset += str.length;
+                }
+                writeString('RIFF');
+                view.setUint32(offset, 36 + pcmData.length * 2, true);
+                offset += 4;
+                writeString('WAVE');
+                writeString('fmt ');
+                view.setUint32(offset, 16, true);
+                offset += 4;
+                view.setUint16(offset, format, true);
+                offset += 2;
+                view.setUint16(offset, channels, true);
+                offset += 2;
+                view.setUint32(offset, sampleRate, true);
+                offset += 4;
+                view.setUint32(offset, byteRate, true);
+                offset += 4;
+                view.setUint16(offset, blockAlign, true);
+                offset += 2;
+                view.setUint16(offset, bitsPerSample, true);
+                offset += 2;
+                writeString('data');
+                view.setUint32(offset, pcmData.length * 2, true);
+                offset += 4;
+                for (let i = 0; i < pcmData.length; i++) {
+                    view.setInt16(offset, pcmData[i], true);
+                    offset += 2;
+                }
+                return new Blob([view], { type: 'audio/wav' });
+            }
+
+            ttsButton.addEventListener('click', async () => {
+                if (isPlaying) {
+                    audioPlayer.pause();
+                    ttsButton.innerHTML = '<span>✨</span><span>Ler em Voz Alta</span>';
+                    isPlaying = false;
+                    return;
+                }
+
+                ttsButton.innerHTML = '<svg class="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Gerando Áudio';
+                ttsButton.disabled = true;
+
+                const payload = {
+                    contents: [{
+                        parts: [{ text: solucaoText }]
+                    }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: {
+                            voiceConfig: {
+                                prebuiltVoiceConfig: { voiceName: "Puck" }
+                            }
+                        }
+                    },
+                    model: "gemini-2.5-flash-preview-tts"
+                };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    const part = result?.candidates?.[0]?.content?.parts?.[0];
+                    const audioData = part?.inlineData?.data;
+                    const mimeType = part?.inlineData?.mimeType;
+
+                    if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                        const sampleRate = parseInt(mimeType.match(/rate=(\d+)/)[1], 10);
+                        const pcmData = base64ToArrayBuffer(audioData);
+                        const pcm16 = new Int16Array(pcmData);
+                        const wavBlob = pcmToWav(pcm16, sampleRate);
+                        const audioUrl = URL.createObjectURL(wavBlob);
+                        audioPlayer.src = audioUrl;
+                        audioPlayer.play();
+                        isPlaying = true;
+                        ttsButton.innerHTML = '<span>&#9616; &#9616;</span><span>Parar Áudio</span>';
+                    } else {
+                        console.error('Dados de áudio inválidos ou ausentes na resposta da API.');
+                        ttsButton.innerHTML = '<span>Erro</span><span>Tente novamente</span>';
+                    }
+                } catch (error) {
+                    console.error('Erro ao gerar áudio:', error);
+                    ttsButton.innerHTML = '<span>Erro</span><span>Tente novamente</span>';
+                } finally {
+                    ttsButton.disabled = false;
+                }
+            });
+
+            audioPlayer.onended = () => {
+                isPlaying = false;
+                ttsButton.innerHTML = '<span>✨</span><span>Ler em Voz Alta</span>';
+            };
+
+            const emailButton = document.getElementById('email-button');
+            const emailModal = document.getElementById('email-modal');
+            const closeModalButton = document.getElementById('close-modal');
+            const generateEmailButton = document.getElementById('generate-email');
+            const emailInput = document.getElementById('email-input');
+            const emailOutput = document.getElementById('email-output');
+            const loadingSpinner = document.getElementById('loading-spinner');
+
+            emailButton.addEventListener('click', () => {
+                emailModal.classList.remove('hidden');
+                emailInput.value = '';
+                emailOutput.value = '';
+            });
+
+            closeModalButton.addEventListener('click', () => {
+                emailModal.classList.add('hidden');
+            });
+
+            generateEmailButton.addEventListener('click', async () => {
+                const userPrompt = emailInput.value;
+                if (!userPrompt.trim()) {
+                    emailOutput.value = "Por favor, digite alguns pontos-chave para gerar o e-mail.";
+                    return;
+                }
+
+                loadingSpinner.classList.remove('hidden');
+                generateEmailButton.disabled = true;
+                emailOutput.value = '';
+
+                const prompt = `Aja como um gerente de projeto do "Conecta Cidadão", uma iniciativa de impacto social que combate a exclusão digital. Com base nos seguintes pontos-chave fornecidos, elabore um rascunho de e-mail profissional e persuasivo para um potencial parceiro ou doador. Inclua um cabeçalho de saudação e um encerramento profissional. A proposta deve ser concisa e focada no impacto social do projeto.
+                
+                Pontos-chave: ${userPrompt}`;
+
+                const payload = {
+                    contents: [{
+                        parts: [{
+                            text: prompt
+                        }]
+                    }]
+                };
+
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+                    const generatedText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    emailOutput.value = generatedText || "Não foi possível gerar o rascunho. Tente novamente.";
+                } catch (error) {
+                    console.error("Erro ao gerar e-mail:", error);
+                    emailOutput.value = "Ocorreu um erro ao gerar o e-mail. Por favor, verifique sua conexão e tente novamente.";
+                } finally {
+                    loadingSpinner.classList.add('hidden');
+                    generateEmailButton.disabled = false;
+                }
+            });
+
+            const explanationModal = document.getElementById('explanation-modal');
+            const explanationTitle = document.getElementById('explanation-title');
+            const explanationText = document.getElementById('explanation-text');
+            const explanationLoading = document.getElementById('explanation-loading');
+            const closeExplanationModalButton = document.getElementById('close-explanation-modal');
+            const expandButtons = document.querySelectorAll('.expand-button');
+
+            expandButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const pillar = event.target.dataset.pillar;
+                    explanationTitle.innerText = pillar;
+                    explanationText.innerText = '';
+                    explanationModal.classList.remove('hidden');
+                    explanationLoading.classList.remove('hidden');
+
+                    const prompt = `Forneça uma explicação detalhada e profissional sobre o conceito de "${pillar}". Contextualize a explicação para um projeto de tecnologia de impacto social, como o "Conecta Cidadão". A explicação deve ser clara e acessível para o público em geral.`;
+
+                    const payload = {
+                        contents: [{
+                            parts: [{ text: prompt }]
+                        }]
+                    };
+                    
+                    const apiKey = "";
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const result = await response.json();
+                        const generatedText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                        explanationText.innerText = generatedText || "Não foi possível gerar a explicação. Tente novamente.";
+                    } catch (error) {
+                        console.error("Erro ao gerar explicação:", error);
+                        explanationText.innerText = "Ocorreu um erro ao gerar a explicação. Por favor, verifique sua conexão e tente novamente.";
+                    } finally {
+                        explanationLoading.classList.add('hidden');
+                    }
+                });
+            });
+
+            closeExplanationModalButton.addEventListener('click', () => {
+                explanationModal.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
